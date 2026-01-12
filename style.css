@@ -1,0 +1,1034 @@
+/* =========================================
+   1. GLOBAL CONFIGURATION & FONTS
+   ========================================= */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+    --bg-deep: #050505;
+    --bg-dark: #0a0a0a;
+    --primary-accent: #3b82f6;
+    --primary-dark: #2563eb;
+    --text-main: #ffffff;
+    --text-muted: #a1a1aa;
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-highlight: rgba(255, 255, 255, 0.15);
+    --card-radius: 24px;
+    --transition-default: all 0.3s ease;
+    --transition-smooth: all 0.4s ease;
+}
+
+/* =========================================
+   2. GLOBAL ELEMENT RESETS & DEFAULTS
+   ========================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    color: var(--text-main);
+    background-color: var(--bg-deep);
+    overflow-x: hidden;
+}
+
+/* Reset common elements */
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+img,
+video {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+section {
+    padding: clamp(60px, 8vw, 100px) 0;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* =========================================
+   3. BACKGROUND & ANIMATIONS
+   ========================================= */
+.fog-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: -999;
+    background: linear-gradient(to bottom, #000000, var(--bg-dark));
+}
+
+.fog-background::before,
+.fog-background::after {
+    content: "";
+    position: absolute;
+    width: 200%;
+    height: 100%;
+    filter: blur(60px);
+    animation: floatFog 20s linear infinite alternate;
+}
+
+.fog-background::before {
+    background-image:
+        radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 40%);
+    background-size: 60% 60%;
+}
+
+.fog-background::after {
+    top: -20%;
+    left: -10%;
+    background-image:
+        radial-gradient(circle at 20% 60%, rgba(100, 100, 255, 0.1) 0%, transparent 60%),
+        radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+    animation-duration: 25s;
+    animation-direction: alternate-reverse;
+}
+
+@keyframes floatFog {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+    100% {
+        transform: translate(-10%, 10%) scale(1.1);
+    }
+}
+
+/* =========================================
+   4. BUTTON & TEXT COMPONENTS
+   ========================================= */
+.btn-blue {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--primary-accent), var(--primary-dark));
+    color: white;
+    padding: 12px 32px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+    transition: var(--transition-default);
+    cursor: pointer;
+}
+
+.btn-blue:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.6);
+}
+
+.section-title {
+    text-align: center;
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 700;
+    margin-bottom: 60px;
+    letter-spacing: -0.02em;
+    background: linear-gradient(to bottom, #fff, #aaa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* =========================================
+   5. HEADER & NAVIGATION (UPDATED)
+   ========================================= */
+header {
+    background-color: rgba(10, 10, 10, 0.6);
+    backdrop-filter: blur(16px);
+    padding: 15px 0;
+    border-bottom: 1px solid var(--glass-border);
+
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+/* HIDDEN STATE (When scrolling down) */
+.header-hidden {
+    transform: translateY(-100%); 
+}
+
+/* SCROLLED STATE (Darker background when scrolling up) */
+/* This makes it easier to read text when you are further down the page */
+.header-scrolled {
+    background-color: rgba(5, 5, 5, 0.95); /* Almost solid black */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5); /* Add shadow for depth */
+}
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap; /* Allows content to wrap on mobile */
+}
+
+.logo video,
+.logo img {
+    max-height: 50px;
+    width: auto;
+}
+
+nav {
+    /* Ensures nav takes available space but doesn't break layout */
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+nav ul {
+    display: flex;
+    gap: 30px;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 12px 40px;
+    border-radius: 50px;
+    border: 1px solid var(--glass-border);
+    flex-wrap: wrap; /* Essential for responsiveness */
+    justify-content: center;
+    align-items: center;
+}
+
+nav ul li a {
+    color: var(--text-muted);
+    font-size: 1rem;
+    font-weight: 500;
+    transition: var(--transition-default);
+    white-space: nowrap;
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+    color: var(--text-main);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+/* =========================================
+   6. HERO SECTION
+   ========================================= */
+.hero {
+    position: relative;
+    width: 100%;
+    
+    /* CRITICAL FIX: Lock the shape to standard 16:9 video. 
+       This prevents the video from cropping/zooming on mobile. */
+    aspect-ratio: 16 / 9; 
+    
+    /* DELETE 'min-height: 80vh'. 
+       We must let the height adjust automatically or alignment will break. */
+    height: auto; 
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.hero-bg-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* This is now safe because the container is locked to 16/9 */
+    z-index: 0;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    z-index: 1;
+}
+
+.hero-content {
+    position: absolute;
+    z-index: 2;
+
+    /* --- ALIGNMENT CONTROL --- */
+    /* Adjust these 2 numbers until text sits in your box */
+    top: 75%;   /* 50% = Vertical Middle */
+    left: 46%;  /* 50% = Horizontal Middle */
+    
+    /* This ensures exact centering on the coordinates above */
+    transform: translate(-50%, -50%);
+    /* ------------------------- */
+
+    width: 100%;
+    max-width: 500px; /* Prevents text from hitting edges */
+    text-align: center;
+    padding: 20px;
+    
+    /* Remove old margins */
+    margin: 0; 
+}
+
+.hero-logo video,
+.hero-logo img {
+    display: block;
+    margin: 0 auto 30px;
+    filter: drop-shadow(0 0 15px rgba(59, 130, 246, 0.5));
+    max-height: 150px;
+    width: auto;
+}
+
+.hero-content h1 {
+    /* Updated clamp: smaller minimum size (1rem) for mobile phones */
+    font-size: clamp(1rem, 4vw, 6rem); 
+    line-height: 1.1;
+    margin-bottom: 10px;
+    font-weight: 800;
+    
+    /* Gradient Text Style */
+    background: linear-gradient(180deg, #ffffff 0%, #a1a1aa 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-content p {
+    font-size: clamp(0.7rem, 1.5vw, 1.1rem); /* Smaller text for mobile */
+    color: #a1a1aa;
+    margin: 0;
+}
+/* =========================================
+   7. PARTICLE CANVAS
+   ========================================= */
+#particleCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    opacity: 1;
+    border-radius: 22px;
+}
+
+.ambient-box {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(18px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow:
+        0 40px 120px rgba(0, 0, 0, 0.7),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+    z-index: 2;
+    overflow: hidden;
+}
+.page-banner {
+    background: radial-gradient(circle at center, rgba(59, 130, 246, 0.2) 0%, transparent 70%);
+    height: 40vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.page-banner h1 {
+    font-size: clamp(3rem, 5vw, 4rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+/* =========================================
+   9. AMBIENT DIVIDER - FUTURISTIC NEON CARD
+   ========================================= */
+.ambient-divider {
+    position: relative;
+    padding: 60px 0;
+    display: flex;
+    justify-content: center;
+    z-index: 5;
+    background: transparent;
+}
+
+.ambient-glow {
+    position: relative;
+    width: 60%;
+    max-width: 700px;
+    height: 240px;
+}
+
+/* Glass Morphism Card with Neon Border */
+.ambient-box {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 22px;
+    background: #000000;
+    backdrop-filter: blur(20px);
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 0 60px rgba(255, 102, 0, 0.1),
+        inset 0 0 60px rgba(0, 212, 255, 0.05);
+    z-index: 2;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+/* =========================================
+   ADVERTISEMENT / PROMO SECTION
+   ========================================= */
+.ad-section {
+    padding: 60px 0;
+    display: flex;
+    justify-content: center;
+    background: transparent;
+}
+
+.ad-card {
+    width: 95%;
+    max-width: 1100px;
+    display: flex;
+    gap: 28px;
+    align-items: center;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius: 16px;
+    padding: 22px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    border: 1px solid rgba(255,255,255,0.03);
+}
+
+.ad-media {
+    flex: 1 1 38%;
+    min-width: 220px;
+}
+
+.ad-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    display: block;
+}
+
+.ad-copy {
+    flex: 1 1 62%;
+    color: var(--text-main);
+}
+
+.ad-copy h3 {
+    font-size: clamp(1.25rem, 2.6vw, 1.75rem);
+    margin: 0 0 8px 0;
+}
+
+.ad-copy p {
+    color: var(--text-muted);
+    margin: 0 0 14px 0;
+    line-height: 1.6;
+}
+
+.ad-cta { display:flex; gap:12px; }
+
+@media (max-width: 768px) {
+    .ad-card { flex-direction: column; text-align: center; }
+    .ad-media { width: 100%; }
+    .ad-copy { width: 100%; }
+}
+
+/* =========================================
+   POSTER / SHOWCASE GRID
+   ========================================= */
+.poster-section { padding: 60px 0; background: transparent; }
+.poster-grid { display: grid; grid-template-columns: repeat(4,1fr); gap:20px; width:95%; max-width:1200px; margin:0 auto; }
+.poster-card { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02)); border-radius:12px; overflow:hidden; box-shadow:0 18px 40px rgba(2,6,23,0.5); transition: transform 260ms ease, box-shadow 260ms ease; display:flex; flex-direction:column; }
+.poster-card img { width:100%; height:180px; object-fit:cover; display:block; }
+.poster-body { padding:18px; }
+.poster-body h4 { margin:0 0 8px 0; font-size:1.05rem; }
+.poster-body p { margin:0; color:var(--text-muted); font-size:0.95rem; }
+.poster-card:hover { transform:translateY(-8px) scale(1.01); box-shadow:0 30px 70px rgba(2,6,23,0.6); }
+@media (max-width: 1024px) { .poster-grid { grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 600px) { .poster-grid { grid-template-columns: 1fr; } .poster-card img { height:220px; } }
+
+/* Poster header */
+.poster-header {
+    width: 95%;
+    max-width: 1200px;
+    margin: 0 auto 22px auto;
+    text-align: center;
+}
+
+.poster-header h2 {
+    font-size: clamp(1.5rem, 3.2vw, 2.25rem);
+    margin: 0 0 8px 0;
+}
+
+.poster-header .subtitle {
+    color: var(--text-muted);
+    margin: 0;
+    font-size: 1rem;
+}
+
+/* Animated Neon Border Glow */
+.ambient-glow::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 22px;
+    padding: 2px;
+    background: linear-gradient(
+        90deg,
+        #ff6600,
+        #ff8800,
+        #ff0080,
+        #00d4ff,
+        #0099ff,
+        #ff6600
+    );
+    background-size: 300% 100%;
+    -webkit-mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: neonBorderFlow 6s linear infinite;
+    filter: blur(2px);
+    opacity: 1;
+    pointer-events: none;
+    z-index: 3;
+}
+
+/* Outer Cinematic Glow */
+.ambient-glow::after {
+    content: "";
+    position: absolute;
+    top: -15px;
+    left: -15px;
+    right: -15px;
+    bottom: -15px;
+    border-radius: 22px;
+    background: linear-gradient(
+        90deg,
+        rgba(255, 102, 0, 0.4),
+        rgba(255, 136, 0, 0.3),
+        rgba(255, 0, 128, 0.3),
+        rgba(0, 212, 255, 0.4),
+        rgba(0, 153, 255, 0.3),
+        rgba(255, 102, 0, 0.4)
+    );
+    background-size: 300% 100%;
+    animation: neonBorderFlow 6s linear infinite;
+    filter: blur(20px);
+    opacity: 0.6;
+    pointer-events: none;
+    z-index: 1;
+}
+
+@keyframes neonBorderFlow {
+    0% {
+        background-position: 0% 0%;
+    }
+    100% {
+        background-position: 300% 0%;
+    }
+}
+
+/* =========================================
+   10. SERVICES SECTION
+   ========================================= */
+.services {
+    position: relative;
+    z-index: 2;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+}
+
+.service-item,
+.service-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    padding: 40px;
+    border-radius: var(--card-radius);
+    text-align: center;
+    transition: var(--transition-smooth);
+    backdrop-filter: blur(10px);
+}
+
+.service-item:hover {
+    transform: translateY(-5px);
+    border-color: var(--glass-highlight);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.service-item .icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02));
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: var(--text-main);
+    margin: 0 auto 25px;
+    border: 1px solid var(--glass-border);
+}
+
+.service-item h3 {
+    font-size: 1.5rem;
+    margin-bottom: 12px;
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+.service-item p {
+    color: var(--text-muted);
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+/* =========================================
+   11. ABOUT PAGE LAYOUTS
+   ========================================= */
+.two-column-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 60px;
+    align-items: center;
+}
+
+.about-image img {
+    border-radius: var(--card-radius);
+    border: 1px solid var(--glass-border);
+    transition: var(--transition-smooth);
+}
+
+.about-image img:hover {
+    box-shadow: 0 20px 50px rgba(59, 130, 246, 0.2);
+}
+
+.about-text h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    font-weight: 700;
+    color: var(--text-main);
+    text-align: left;
+}
+
+.about-text p {
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    line-height: 1.8;
+    text-align: left;
+}
+
+/* =========================================
+   12. TEAM SECTION
+   ========================================= */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 30px;
+}
+
+.team-member {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--card-radius);
+    overflow: hidden;
+    text-align: center;
+    transition: var(--transition-default);
+}
+
+.team-member:hover {
+    border-color: var(--glass-highlight);
+    transform: translateY(-5px);
+}
+
+.team-member img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+}
+
+.member-info {
+    padding: 20px;
+}
+
+.member-info h3 {
+    font-size: 1.2rem;
+    color: var(--text-main);
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.member-info p {
+    color: var(--primary-accent);
+    font-size: 0.9rem;
+}
+
+/* =========================================
+   13. PORTFOLIO SECTION
+   ========================================= */
+.portfolio-filter {
+    text-align: center;
+    margin-bottom: 50px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.portfolio-filter button {
+    background: transparent;
+    border: 1px solid var(--glass-border);
+    color: var(--text-muted);
+    padding: 10px 25px;
+    margin: 5px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: var(--transition-default);
+    font-weight: 500;
+}
+
+.portfolio-filter button.active,
+.portfolio-filter button:hover {
+    background: var(--text-main);
+    color: black;
+    border-color: var(--text-main);
+}
+
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+}
+
+.portfolio-item {
+    background: var(--glass-bg);
+    border-radius: var(--card-radius);
+    overflow: hidden;
+    border: 1px solid var(--glass-border);
+    position: relative;
+    cursor: pointer;
+}
+
+.portfolio-item img {
+    width: 100%;
+    height: auto;
+    transition: var(--transition-smooth);
+    display: block;
+}
+
+.portfolio-item:hover img {
+    transform: scale(1.05);
+}
+
+.portfolio-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 30px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+    opacity: 0;
+    transition: var(--transition-default);
+    text-align: left;
+}
+
+.portfolio-item:hover .portfolio-overlay {
+    opacity: 1;
+}
+
+/* =========================================
+   14. CONTACT PAGE & FORMS
+   ========================================= */
+.contact-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 40px;
+}
+
+.contact-form,
+.contact-info-box {
+    background: rgba(20, 20, 20, 0.6);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--card-radius);
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+}
+
+.contact-form h2 {
+    color: var(--text-main);
+    margin-bottom: 30px;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 10px;
+    color: var(--text-muted);
+    font-weight: 500;
+    text-align: left;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    color: white;
+    font-family: inherit;
+    font-size: 1rem;
+    transition: var(--transition-default);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: var(--text-muted);
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-accent);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.info-item {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+    align-items: flex-start;
+}
+
+.info-item i {
+    font-size: 24px;
+    color: var(--primary-accent);
+    flex-shrink: 0;
+}
+
+.info-item strong {
+    display: block;
+    color: var(--text-main);
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+}
+
+.info-item p {
+    color: var(--text-muted);
+    margin: 0;
+}
+
+/* =========================================
+   15. FOOTER (UPDATED WITH QUICK LINKS)
+   ========================================= */
+footer {
+    background-color: black;
+    border-top: 1px solid var(--glass-border);
+    padding: 80px 0 40px;
+    color: var(--text-muted);
+}
+
+.footer-grid {
+    display: grid;
+    /* Adjusted minmax to fit 4 columns nicely on desktop, 2 on tablet, 1 on mobile */
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 40px; 
+    margin-bottom: 60px;
+    align-items: flex-start;
+}
+
+footer h3 {
+    color: var(--text-main);
+    margin-bottom: 25px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-align: left;
+}
+
+footer ul {
+    list-style: none;
+    text-align: left;
+    padding: 0;
+}
+
+/* Link Styles */
+.contact-us li a,
+.quick-links li a {
+    color: #ffffff;
+    text-decoration: none;
+    transition: var(--transition-default);
+    display: inline-block;
+}
+
+/* Hover Effect */
+.contact-us li a:hover,
+.quick-links li a:hover {
+    color: var(--primary-accent);
+    transform: translateX(5px); /* Slide effect on hover */
+}
+
+/* List Item Spacing */
+.contact-us li,
+.quick-links li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    color: #ffffff;
+}
+
+/* Social Icons */
+.social-icons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.social-icons a {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 50%;
+    transition: var(--transition-default);
+    color: white !important;
+}
+
+.social-icons a:hover {
+    background: var(--text-main);
+    color: black !important;
+    transform: translateY(-3px);
+}
+
+/* =========================================
+   16. RESPONSIVE MEDIA QUERIES (UPDATED)
+   ========================================= */
+
+/* Tablet & Mobile (Max Width 1024px) */
+@media (max-width: 1024px) {
+    /* Stack header elements vertically on smaller screens */
+    .header-content {
+        justify-content: center;
+        gap: 15px;
+        flex-direction: column; /* Stacks Logo, Nav, Button */
+    }
+
+    nav {
+        width: 100%; /* Nav takes full width */
+    }
+
+    nav ul {
+        width: 100%;
+        gap: 15px;
+        padding: 15px 20px;
+        justify-content: center; /* Center the links */
+    }
+    
+    .header-btn {
+        margin-top: 5px;
+    }
+    
+    .ambient-glow {
+        width: 95%;
+    }
+
+    .contact-form, .contact-info-box {
+        padding: 40px;
+    }
+}
+
+/* Mobile Specific (Max Width 768px) */
+@media (max-width: 768px) {
+    
+    /* Make Nav links slightly smaller on mobile to fit better */
+    nav ul li a {
+        font-size: 0.9rem;
+    }
+
+    /* Hero Text Adjustment */
+    .hero-content h1 {
+        font-size: clamp(2rem, 5vw, 3rem);
+    }
+
+    /* Stack other grids, but KEEP Footer grid as defined above */
+    .two-column-grid,
+    .contact-container {
+        grid-template-columns: 1fr;
+    }
+
+    /* Posters and Services keep 2 columns on tablets/large phones */
+    .portfolio-grid,
+    .services-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+
+    .ambient-divider {
+        padding: 80px 0;
+    }
+}
+
+/* Small Mobile (Max Width 480px) */
+@media (max-width: 480px) {
+    .container {
+        width: 95%;
+    }
+
+    /* Header adjustments for very small screens */
+    .logo video, .logo img {
+        max-height: 40px;
+    }
+    
+    /* Hide button only on very small screens if it takes too much space */
+    /* .header-btn { display: none; } */ 
+
+    /* Footer: Even on small mobile, try to keep 2 columns if possible, 
+       but if screen is <320px, it will naturally stack due to minmax(160px) */
+    .footer-grid {
+        gap: 30px;
+    }
+}
